@@ -8,7 +8,7 @@
     ],
     "parameters": {
         "appService_name": {
-            "value": "SampleApiWestUs"// need to check how to append location name or prefix
+            "value": "SampleApiWestUs" // need to check how to append location name or prefix
         },
         "appServicePlan_location": {
             "value": "WEST US"
@@ -33,6 +33,9 @@
         },
         "servicePackageLink": {
             "value": "bin\\WebApp.zip"
+        },
+        "uniqueDnsName": {
+            "value": "SampleApiWestUsAmol"
         }
     }
 }

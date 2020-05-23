@@ -31,7 +31,17 @@
             "metadata": {
                 "description": "The URL for the GitHub repository that contains the project to deploy."
             }
+        },
+        "uniqueDnsName": {
+            "type": "string",
+            "metadata": {
+                "description": "Relative DNS name for the traffic manager profile, resulting FQDN will be <uniqueDnsName>.trafficmanager.net, must be globally unique."
+            }
         }
+    },
+
+    "variables": {
+        "webAppLocations": [ "West US", "East US" ]
     },
     "resources": [
         {
@@ -54,12 +64,12 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverFarms', parameters('appServicePlan_name'))]"
-            ]          
+            ]
         },
         {
             "type": "Microsoft.Web/serverfarms",
             "sku": {
-                "name": "[parameters('appServicePlan_skuName')]",                
+                "name": "[parameters('appServicePlan_skuName')]",
                 "capacity": 1
             },
             "name": "[parameters('appServicePlan_name')]",
@@ -67,6 +77,43 @@
             "location": "[parameters('appServicePlan_location')]",
             "properties": {
                 "name": "[parameters('appServicePlan_name')]"
+            }
+        },
+        {
+            "apiVersion": "2015-11-01",
+            "type": "Microsoft.Network/trafficManagerProfiles",
+            "name": "ExampleTMProfile",
+            "location": "global",
+            "properties": {
+                "profileStatus": "Enabled",
+                "trafficRoutingMethod": "Priority",
+                "dnsConfig": {
+                    "relativeName": "[parameters('uniqueDnsName')]",
+                    "ttl": 30
+                },
+                "monitorConfig": {
+                    "protocol": "HTTP",
+                    "port": 80,
+                    "path": "/"
+                }
+            }
+        },
+        {
+            "apiVersion": "2015-11-01",
+            "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+            "dependsOn": [
+                "Microsoft.Network/trafficManagerProfiles/ExampleTMProfile",
+                "[concat('Microsoft.Web/sites/', parameters('appService_name'), copyindex())]"
+            ],
+            "location": "global",
+            "name": "[concat('ExampleTMProfile/Endpoint', copyIndex())]",
+            "copy": {
+                "name": "endpointloop",
+                "count": "[length(variables('webAppLocations'))]"
+            },
+            "properties": {
+                "targetResourceId": "[resourceId('Microsoft.Web/sites/', concat(parameters('appService_name'), copyIndex()))]",
+                "endpointStatus": "Enabled"
             }
         }
     ]

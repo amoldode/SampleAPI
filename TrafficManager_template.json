@@ -45,7 +45,7 @@
 			"type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
 			"dependsOn": [
 				"Microsoft.Network/trafficManagerProfiles/ExampleTMProfile",
-				"[concat('Microsoft.Web/sites/', parameters('uniqueDnsNameForWebApp'), copyindex())]"
+				"[concat('Microsoft.Web/sites/', parameters('uniqueDnsNameForWebApp'), '')]"
 			],
 			"location": "global",
 			"name": "[concat('ExampleTMProfile/Endpoint', copyIndex())]",
@@ -54,7 +54,7 @@
 				"count": "[length(variables('webAppLocations'))]"
 			},
 			"properties": {
-				"targetResourceId": "[resourceId('Microsoft.Web/sites/', concat(parameters('uniqueDnsNameForWebApp'), copyIndex()))]",
+				"targetResourceId": "[resourceId('Microsoft.Web/sites/', concat(parameters('uniqueDnsNameForWebApp'), ''))]",
 				"endpointStatus": "Enabled"
 			}
 		}
