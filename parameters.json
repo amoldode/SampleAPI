@@ -8,7 +8,7 @@
     ],
     "parameters": {
         "appService_name": {
-            "value": "SampleApi"
+            "value": "SampleApi-WestUs"// need to check how to append location name or prefix
         },
         "appServicePlan_location": {
             "value": "WEST US"
