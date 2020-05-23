@@ -103,16 +103,16 @@
             "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
             "dependsOn": [
                 "Microsoft.Network/trafficManagerProfiles/ExampleTMProfile",
-                "[concat('Microsoft.Web/sites/', parameters('appService_name'), copyindex())]"
+                "[concat('Microsoft.Web/sites/', parameters('appService_name'), '')]"
             ],
             "location": "global",
-            "name": "[concat('ExampleTMProfile/Endpoint', copyIndex())]",
+            "name": "[concat('ExampleTMProfile/Endpoint', '')]",
             "copy": {
                 "name": "endpointloop",
                 "count": "[length(variables('webAppLocations'))]"
             },
             "properties": {
-                "targetResourceId": "[resourceId('Microsoft.Web/sites/', concat(parameters('appService_name'), copyIndex()))]",
+                "targetResourceId": "[resourceId('Microsoft.Web/sites/', concat(parameters('appService_name'), ''))]",
                 "endpointStatus": "Enabled"
             }
         }
