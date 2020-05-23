@@ -41,7 +41,7 @@
     },
 
     "variables": {
-        "webAppLocations": [ "West US", "East US" ]
+        "webAppLocations": [ "West US" ]
     },
     "resources": [
         {
@@ -106,7 +106,7 @@
                 "[concat('Microsoft.Web/sites/', parameters('appService_name'), '')]"
             ],
             "location": "global",
-            "name": "[concat('ExampleTMProfile/Endpoint', '')]",
+            "name": "[parameters('appService_name')]",
             "copy": {
                 "name": "endpointloop",
                 "count": "[length(variables('webAppLocations'))]"
