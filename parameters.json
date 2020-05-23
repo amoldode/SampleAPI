@@ -14,7 +14,7 @@
             "value": "WEST US"
         },
         "appServicePlan_name": {
-            "value": "SampleApi-AppPlan"
+            "value": "SampleApiWestUs-AppPlan"
         },
         "appServicePlan_skuName": {
             "value": "S1"
