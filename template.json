@@ -54,20 +54,7 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverFarms', parameters('appServicePlan_name'))]"
-            ],
-            "resources": [
-                {
-                    "apiVersion": "2014-06-01",
-                    "name": "MSDeploy",
-                    "type": "Extensions",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Web/Sites', parameters('appService_name'))]"
-                    ],
-                    "properties": {
-                        "packageUri": "[parameters('servicePackageLink')]"
-                    }
-                }
-            ]
+            ]          
         },
         {
             "type": "Microsoft.Web/serverfarms",
