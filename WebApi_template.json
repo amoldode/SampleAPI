@@ -106,7 +106,7 @@
                 "[concat('Microsoft.Web/sites/', parameters('appService_name'), '')]"
             ],
             "location": "global",
-            "name": "[parameters('appService_name')]",
+            "name": "[concat('ExampleTMProfile/Endpoint', '')]",
             "copy": {
                 "name": "endpointloop",
                 "count": "[length(variables('webAppLocations'))]"
