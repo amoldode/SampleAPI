@@ -38,7 +38,7 @@
             "type": "String"
         },
         "msdeployPackageUrl": {
-            "type": "string"
+            "type": "securestring"
         },
         "keysAppPermissions": {
             "type": "array",
