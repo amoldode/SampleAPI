@@ -36,7 +36,10 @@
         },
         "SSLdomainName": {
             "type": "String"
-        },        
+        },
+        "msdeployPackageUrl": {
+            "type": "string"
+        },
         "keysAppPermissions": {
             "type": "array",
             "defaultValue": [
@@ -121,6 +124,21 @@
             "metadata": {
                 "description": "Specifies the permissions to secrets in the vault. Valid values are: all, get, list, set, delete, backup, restore, recover, and purge."
             }
+        },
+        "appServicesPerRegions": {
+            "type": "array",
+            "allowedValues": [
+                {
+                    "location": "West US",
+                    "appName": "prod-amer-ccafpi-webapp-0",
+                    "resourceGroupName": "prod-amer-ccafpi-rg-0"
+                },
+                {
+                    "location": "East US",
+                    "appName": "prod-amer-ccafpi-webapp-1",
+                    "resourceGroupName": "prod-amer-ccafpi-rg-1"
+                }
+            ]
         }
     },
     "resources": [
