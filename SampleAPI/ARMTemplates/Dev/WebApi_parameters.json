@@ -93,7 +93,7 @@
         },
         "msdeployPackageUrl": {
             "type": "string",
-            "value": "drop/WebApp.zip"
+            "value": "WebApp.zip"
         }
     }
 }
