@@ -36,10 +36,7 @@
         },
         "SSLdomainName": {
             "type": "String"
-        },
-        "msdeployPackageUrl": {
-            "type": "string"
-        },
+        },        
         "keysAppPermissions": {
             "type": "array",
             "defaultValue": [
