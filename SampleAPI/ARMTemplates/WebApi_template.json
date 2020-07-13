@@ -121,10 +121,7 @@
         },
         "SSLdomainName": {            
             "type": "String"
-        },
-        "appServicesPerRegions": {
-            "type": "array"                
-        },
+        },        
         "msdeployPackageUrl": {
             "type": "string"          
         }
