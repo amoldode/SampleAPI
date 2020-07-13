@@ -43,5 +43,11 @@ steps:
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
 
+- task: CopyFiles@2
+  displayName: 'Copy Files to:  $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: KMAppService/ARMTemplates
+    TargetFolder: '$(build.artifactstagingdirectory)\Templates'
+
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifacts'
