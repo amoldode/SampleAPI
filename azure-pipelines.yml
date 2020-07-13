@@ -47,7 +47,7 @@ steps:
   displayName: 'Copy Files to:  $(build.artifactstagingdirectory)'
   inputs:
     SourceFolder: SampleAPI/ARMTemplates
-    TargetFolder: '$(build.artifactstagingdirectory)\drop'
+    TargetFolder: '$(build.artifactstagingdirectory)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifacts'
