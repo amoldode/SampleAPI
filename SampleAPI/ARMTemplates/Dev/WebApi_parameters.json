@@ -78,7 +78,7 @@
         },
         "appServicesPerRegions": {
             "type": "array",
-            "defaultValue": [
+            "value": [
                 {
                     "location": "West US",
                     "appName": "prod-amer-ccafpi-webapp-0",
@@ -93,7 +93,7 @@
         },
         "msdeployPackageUrl": {
             "type": "string",
-            "defaultValue": "WebApp.zip"
+            "value": "WebApp.zip"
         }
     }
 }
