@@ -93,7 +93,7 @@
         },
         "msdeployPackageUrl": {
             "type": "string",
-            "value": "WebApp.zip"
+            "value": "SampleAPI.zip"
         }
     }
 }
