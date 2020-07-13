@@ -22,17 +22,23 @@
             "defaultValue": 1,
             "type": "Int"
         },
-        "ParentResourceGroupName": {          
+        "ParentResourceGroupName": {
             "type": "String"
         },
         "uniqueDnsNameForTM": {
-            "type": "string",          
+            "type": "string",
             "metadata": {
                 "description": "Relative DNS name for the traffic manager profile, resulting FQDN will be <uniqueDnsName>.trafficmanager.net, must be globally unique."
             }
         },
-        "keyvault_name": {           
+        "keyvault_name": {
             "type": "String"
+        },
+        "SSLdomainName": {
+            "type": "String"
+        },
+        "msdeployPackageUrl": {
+            "type": "string"
         },
         "keysAppPermissions": {
             "type": "array",
@@ -115,15 +121,9 @@
                 "SetIssuers",
                 "DeleteIssuers"
             ],
-			"metadata": {
-				"description": "Specifies the permissions to secrets in the vault. Valid values are: all, get, list, set, delete, backup, restore, recover, and purge."
-			}
-        },
-        "SSLdomainName": {            
-            "type": "String"
-        },        
-        "msdeployPackageUrl": {
-            "type": "string"          
+            "metadata": {
+                "description": "Specifies the permissions to secrets in the vault. Valid values are: all, get, list, set, delete, backup, restore, recover, and purge."
+            }
         }
     },
     "resources": [
