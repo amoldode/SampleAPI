@@ -92,7 +92,7 @@
             ]
         },
         "msdeployPackageUrl": {          
-            "value": "https://dev.azure.com/amdode/_apis/resources/Containers/10397546/drop?itemPath=drop%2FSampleAPI.zip"
+            "value": "drop//SampleAPI.zip"
         }
     }
 }
