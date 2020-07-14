@@ -23,22 +23,27 @@
             "type": "Int"
         },
         "ParentResourceGroupName": {
-            "type": "String"
+            "type": "String",
+            "defaultValue": "ccafpi"
         },
         "uniqueDnsNameForTM": {
             "type": "string",
+            "defaultValue": "ccafpi-tm",
             "metadata": {
                 "description": "Relative DNS name for the traffic manager profile, resulting FQDN will be <uniqueDnsName>.trafficmanager.net, must be globally unique."
             }
         },
         "keyvault_name": {
-            "type": "String"
+            "type": "String",
+            "defaultValue": "d365ccafpi"
         },
         "SSLdomainName": {
-            "type": "String"
+            "type": "String",
+            "defaultValue": "www.d365ccafpi.com"
         },
         "msdeployPackageUrl": {
-            "type": "securestring"
+            "type": "securestring",
+            "defaultValue": "SampleAPI.zip"
         },
         "keysAppPermissions": {
             "type": "array",
@@ -127,7 +132,7 @@
         },
         "appServicesPerRegions": {
             "type": "array",
-            "allowedValues": [
+            "defaultValue": [
                 {
                     "location": "West US",
                     "appName": "prod-amer-ccafpi-webapp-0",
@@ -139,6 +144,62 @@
                     "resourceGroupName": "prod-amer-ccafpi-rg-1"
                 }
             ]
+        },
+        "minimumCapacity": {
+            "type": "Int",
+            "defaultValue": 1,
+            "metadata": {
+                "description": "The minimum capacity.  Autoscale engine will ensure the instance count is at least this value."
+            }
+        },
+        "maximumCapacity": {
+            "type": "Int",
+            "defaultValue": 10,
+            "metadata": {
+                "description": "The maximum capacity.  Autoscale engine will ensure the instance count is not greater than this value."
+            }
+        },
+        "defaultCapacity": {
+            "type": "Int",
+            "defaultValue": 1,
+            "metadata": {
+                "description": "The default capacity.  Autoscale engine will preventively set the instance count to be this value if it can not find any metric data."
+            }
+        },
+        "metricName": {
+            "type": "string",
+            "defaultValue": "CpuPercentage",
+            "metadata": {
+                "description": "The metric name."
+            }
+        },
+        "metricThresholdToScaleOut": {
+            "type": "Int",
+            "defaultValue": 60,
+            "metadata": {
+                "description": "The metric upper threshold.  If the metric value is above this threshold then autoscale engine will initiate scale out action."
+            }
+        },
+        "metricThresholdToScaleIn": {
+            "type": "Int",
+            "defaultValue": 20,
+            "metadata": {
+                "description": "The metric lower threshold.  If the metric value is below this threshold then autoscale engine will initiate scale in action."
+            }
+        },
+        "changePercentScaleOut": {
+            "type": "Int",
+            "defaultValue": 20,
+            "metadata": {
+                "description": "The percentage to increase the instance count when autoscale engine is initiating scale out action."
+            }
+        },
+        "changePercentScaleIn": {
+            "type": "Int",
+            "defaultValue": 10,
+            "metadata": {
+                "description": "The percentage to decrease the instance count when autoscale engine is initiating scale in action."
+            }
         }
     },
     "resources": [
@@ -241,6 +302,69 @@
                             ]
                         },
                         {
+                            "type": "Microsoft.Insights/autoscalesettings",
+                            "name": "[concat('AppServicePlan-',parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName,'-settings')]",
+                            "dependsOn": [
+                                "[concat('AppServicePlan-',parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName)]"
+                            ],
+                            "apiVersion": "2014-04-01",
+                            "location": "[parameters('appServicesPerRegions')[copyIndex('appservicecopy')].location]",
+                            "properties": {
+                                "profiles": [
+                                    {
+                                        "name": "DefaultAutoscaleProfile",
+                                        "capacity": {
+                                            "minimum": "[parameters('minimumCapacity')]",
+                                            "maximum": "[parameters('maximumCapacity')]",
+                                            "default": "[parameters('defaultCapacity')]"
+                                        },
+                                        "rules": [
+                                            {
+                                                "metricTrigger": {
+                                                    "metricName": "[parameters('metricName')]",
+                                                    "metricNamespace": "microsoft.web/serverfarms",
+                                                    "metricResourceUri": "[concat('/subscriptions/', Subscription().SubscriptionId,'/resourceGroups/', parameters('appServicesPerRegions')[copyIndex('appservicecopy')].resourceGroupName, '/providers/Microsoft.Web/serverfarms/', concat('AppServicePlan-',parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName))]",
+                                                    "timeGrain": "PT5M",
+                                                    "statistic": "Average",
+                                                    "timeWindow": "PT10M",
+                                                    "timeAggregation": "Average",
+                                                    "operator": "GreaterThan",
+                                                    "threshold": "[parameters('metricThresholdToScaleOut')]"
+                                                },
+                                                "scaleAction": {
+                                                    "direction": "Increase",
+                                                    "type": "PercentChangeCount",
+                                                    "value": "[parameters('changePercentScaleOut')]",
+                                                    "cooldown": "PT10M"
+                                                }
+                                            },
+                                            {
+                                                "metricTrigger": {
+                                                    "metricName": "[parameters('metricName')]",
+                                                    "metricNamespace": "microsoft.web/serverfarms",
+                                                    "metricResourceUri": "[concat('/subscriptions/', Subscription().SubscriptionId,'/resourceGroups/', parameters('appServicesPerRegions')[copyIndex('appservicecopy')].resourceGroupName, '/providers/Microsoft.Web/serverfarms/', concat('AppServicePlan-',parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName))]",
+                                                    "timeGrain": "PT5M",
+                                                    "statistic": "Average",
+                                                    "timeWindow": "PT10M",
+                                                    "timeAggregation": "Average",
+                                                    "operator": "LessThan",
+                                                    "threshold": "[parameters('metricThresholdToScaleIn')]"
+                                                },
+                                                "scaleAction": {
+                                                    "direction": "Decrease",
+                                                    "type": "PercentChangeCount",
+                                                    "value": "[parameters('changePercentScaleIn')]",
+                                                    "cooldown": "PT10M"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "enabled": true,
+                                "targetResourceUri": "[concat('/subscriptions/', Subscription().SubscriptionId,'/resourceGroups/', parameters('appServicesPerRegions')[copyIndex('appservicecopy')].resourceGroupName, '/providers/Microsoft.Web/serverfarms/', concat('AppServicePlan-',parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName))]"
+                            }
+                        },
+                        {
                             //node to create app service for Americas,, this will create multiple instances as per variable appServicesPerRegions locations
                             "type": "Microsoft.Web/sites",
                             "kind": "WebApp",
@@ -272,7 +396,7 @@
                                         "serverFarmId": "[concat('/subscriptions/', Subscription().SubscriptionId,'/resourceGroups/', parameters('appServicesPerRegions')[copyIndex('appservicecopy')].resourceGroupName, '/providers/Microsoft.Web/serverfarms/', concat('AppServicePlan-',parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName))]",
                                         "kind": "WebApp",
                                         "httpsOnly": true
-                                    },
+                                    }
                                     "resources": [
                                         {
                                             "name": "MSDeploy",
