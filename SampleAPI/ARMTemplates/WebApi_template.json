@@ -396,7 +396,7 @@
                                         "serverFarmId": "[concat('/subscriptions/', Subscription().SubscriptionId,'/resourceGroups/', parameters('appServicesPerRegions')[copyIndex('appservicecopy')].resourceGroupName, '/providers/Microsoft.Web/serverfarms/', concat('AppServicePlan-',parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName))]",
                                         "kind": "WebApp",
                                         "httpsOnly": true
-                                    }
+                                    },
                                     "resources": [
                                         {
                                             "name": "MSDeploy",
