@@ -412,7 +412,7 @@
                             "resources": [
                                 {
                                     "type": "slots",
-                                    "name": "-staging",
+                                    "name": "[concat(parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName, '/','Staging')]",
                                     "apiVersion": "2018-11-01",
                                     "location": "[parameters('appServicesPerRegions')[copyIndex('appservicecopy')].location]",
                                     "dependsOn": [
@@ -473,8 +473,22 @@
                                     "name": "web",
                                     "properties": "[parameters('webServerSettings')]",
                                     "dependsOn": [
-                                       "[concat(parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName)]"
+                                        "[concat(parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName)]"
                                     ]
+                                },
+                                {
+                                    "type": "Microsoft.Web/sites/hostNameBindings",
+                                    "apiVersion": "2018-11-01",
+                                    "name": "[concat(parameters('appServicesPerRegions')[copyIndex('resources')].appName,'/',parameters('SSLdomainName'))]",
+                                    "properties": {
+                                        "siteName": "[concat(parameters('appServicesPerRegions')[copyIndex('resources')].appName)]",
+                                        "hostNameType": "Verified",
+                                        "sslState": "SniEnabled",
+                                        "dependsOn": [
+                                            "[concat(parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName)]"
+                                        ]
+                                    }
+
                                 }
                             ]
 
