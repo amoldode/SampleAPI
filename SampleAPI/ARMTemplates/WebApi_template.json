@@ -200,6 +200,32 @@
             "metadata": {
                 "description": "The percentage to decrease the instance count when autoscale engine is initiating scale in action."
             }
+        },
+        "AppSettings": {
+            "type": "object",
+            "defaultValue": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "WEBSITE_LOAD_CERTIFICATES": "*",
+                "MSDEPLOY_RENAME_LOCKED_FILES": "1",
+                "WEBSITE_HTTPLOGGING_RETENTION_DAYS": "7",
+                "WEBSITE_NODE_DEFAULT_VERSION": "6.9.1",
+                "WEBSITE_SWAP_WARMUP_PING_PATH": "/swagger",
+                "WEBSITE_SWAP_WARMUP_PING_STATUSES": "200,301,302",
+                "WEBSITE_FIRST_PARTY_ID": "AntMDS"
+            }
+        },
+        "webServerSettings": {
+            "type": "object",
+            "defaultValue": {
+                "alwaysOn": true
+            }
+        },
+        "webServerSettingsSlot": {
+            "type": "object",
+            "defaultValue": {
+                "alwaysOn": true,
+                "autoSwapSlotName": "production"
+            }
         }
     },
     "resources": [
@@ -410,8 +436,44 @@
                                                 "packageUri": "[parameters('msdeployPackageUrl')]",
                                                 "AppOffline": true
                                             }
+                                        },
+                                        {
+                                            "apiVersion": "2018-02-01",
+                                            "type": "config",
+                                            "name": "appsettings",
+                                            "properties": "[parameters('AppSettings')]",
+                                            "dependsOn": [
+                                                "[concat(parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName,'-staging')]"
+                                            ]
+                                        },
+                                        {
+                                            "apiVersion": "2018-02-01",
+                                            "type": "config",
+                                            "name": "web",
+                                            "properties": "[parameters('webServerSettingsSlot')]",
+                                            "dependsOn": [
+                                                "[concat(parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName,'-staging')]"
+                                            ]
                                         }
 
+                                    ]
+                                },
+                                {
+                                    "apiVersion": "2018-02-01",
+                                    "type": "config",
+                                    "name": "appsettings",
+                                    "properties": "[parameters('AppSettings')]",
+                                    "dependsOn": [
+                                        "[concat(parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName)]"
+                                    ]
+                                },
+                                {
+                                    "apiVersion": "2018-02-01",
+                                    "type": "config",
+                                    "name": "web",
+                                    "properties": "[parameters('webServerSettings')]",
+                                    "dependsOn": [
+                                       "[concat(parameters('appServicesPerRegions')[copyIndex('appservicecopy')].appName)]"
                                     ]
                                 }
                             ]

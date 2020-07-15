@@ -93,6 +93,28 @@
         },
         "msdeployPackageUrl": {          
             "value": "drop//SampleAPI.zip"
-        }
+        },
+        "AppSettings": {
+            "value": {
+              "ASPNETCORE_ENVIRONMENT": "Development",
+              "WEBSITE_LOAD_CERTIFICATES": "*",
+              "MSDEPLOY_RENAME_LOCKED_FILES": "1",
+              "WEBSITE_HTTPLOGGING_RETENTION_DAYS": "7",
+              "WEBSITE_NODE_DEFAULT_VERSION": "6.9.1",
+              "WEBSITE_SWAP_WARMUP_PING_PATH": "/swagger",
+              "WEBSITE_SWAP_WARMUP_PING_STATUSES": "200,301,302"              
+            }
+          },
+          "webServerSettings": {
+            "value": {
+              "alwaysOn": true
+            }
+          },
+          "webServerSettingsSlot": {
+            "value": {
+              "alwaysOn": true,
+              "autoSwapSlotName": "production"
+            }
+          }
     }
 }
