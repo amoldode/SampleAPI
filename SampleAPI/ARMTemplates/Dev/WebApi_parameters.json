@@ -115,6 +115,12 @@
               "alwaysOn": true,
               "autoSwapSlotName": "production"
             }
+          },
+          "existingKeyVaultId": {
+            "value": "/subscriptions/245dec7f-6313-428d-992e-5a808d7f5e35/resourceGroups/ccinsights-dev/providers/Microsoft.KeyVault/vaults/CCInsights-KeyVault-Dev"
+          },
+          "existingKeyVaultSecretName": {
+            "value": "ccinsights-dev2"
           }
     }
 }
